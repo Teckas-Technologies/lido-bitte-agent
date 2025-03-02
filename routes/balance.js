@@ -4,14 +4,14 @@ const { ethers } = require("ethers");
 
 const router = express.Router();
 const SEPOLIA_API_KEY = "7bb6501ed7b74d1e91fdd69ddfe59ce8";
-const rpcUrl = `https://mainnet.infura.io/v3/${SEPOLIA_API_KEY}`;
+const rpcUrl = `https://sepolia.infura.io/v3/${SEPOLIA_API_KEY}`;
 
 console.log("RPC URL:", rpcUrl);
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 const lidoSDK = new LidoSDK({
-  chainId: 1,
+  chainId: 11155111,
   rpcUrls: [rpcUrl],
   web3Provider: provider,
 });
