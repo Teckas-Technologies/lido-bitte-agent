@@ -1,15 +1,18 @@
 const express = require("express");
-const { LidoSDK, TransactionCallbackStage } = require("@lidofinance/lido-ethereum-sdk");
+const {
+  LidoSDK,
+  TransactionCallbackStage,
+} = require("@lidofinance/lido-ethereum-sdk");
 const { ethers } = require("ethers");
 
 const router = express.Router();
 
 const SEPOLIA_API_KEY = "7bb6501ed7b74d1e91fdd69ddfe59ce8";
-const rpcUrl = `https://sepolia.infura.io/v3/${SEPOLIA_API_KEY}`;
+const rpcUrl = `https://mainnet.infura.io/v3/{SEPOLIA_API_KEY}`;
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 const sdk = new LidoSDK({
-  chainId: 11155111, // Sepolia Chain ID
+  chainId: 1, // Sepolia Chain ID
   rpcUrls: [rpcUrl],
   web3Provider: provider, // Use ethers provider
 });
@@ -21,7 +24,9 @@ router.get("/wrap", async (req, res) => {
     const { amount, evmAddress } = req.query;
 
     if (!amount || !evmAddress) {
-      return res.status(400).json({ message: "Missing required query parameters: amount, evmAddress" });
+      return res.status(400).json({
+        message: "Missing required query parameters: amount, evmAddress",
+      });
     }
 
     // Convert amount to BigInt (wei)
@@ -37,7 +42,6 @@ router.get("/wrap", async (req, res) => {
       console.log("Approving stETH for wrapping...");
       await sdk.wrap.approveStethForWrap({
         value: valueInWei,
-  
       });
     }
 
@@ -45,7 +49,6 @@ router.get("/wrap", async (req, res) => {
     console.log("Wrapping stETH to wstETH...");
     const wrapResult = await sdk.wrap?.wrapEth({
       value: valueInWei,
-     
     });
 
     console.log("Wrap Transaction:", wrapResult);
@@ -54,7 +57,6 @@ router.get("/wrap", async (req, res) => {
       message: "stETH successfully wrapped to wstETH",
       transaction: wrapResult,
     });
-
   } catch (error) {
     console.error("Wrap transaction error:", error);
     res.status(500).json({
@@ -65,6 +67,5 @@ router.get("/wrap", async (req, res) => {
 });
 
 // Transaction callback function
-
 
 module.exports = router;

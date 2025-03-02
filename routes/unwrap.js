@@ -4,12 +4,12 @@ const { ethers } = require("ethers");
 
 const router = express.Router();
 const SEPOLIA_API_KEY = "7bb6501ed7b74d1e91fdd69ddfe59ce8";
-const rpcUrl = `https://sepolia.infura.io/v3/${SEPOLIA_API_KEY}`;
+const rpcUrl = `https://mainnet.infura.io/v3/{SEPOLIA_API_KEY}`;
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 const sdk = new LidoSDK({
-  chainId: 11155111, // Sepolia Chain ID
+  chainId: 1, // Sepolia Chain ID
   rpcUrls: [rpcUrl],
   web3Provider: provider,
   modules: ["wrap"], // Ensure wrap module is available
@@ -28,9 +28,14 @@ router.get("/unwrap", async (req, res) => {
         .json({ message: "Missing required query parameters: value, account" });
     }
 
-    console.log("🔍 Checking if unwrap is available:", typeof sdk?.wrap?.unwrap);
+    console.log(
+      "🔍 Checking if unwrap is available:",
+      typeof sdk?.wrap?.unwrap
+    );
     if (!sdk.wrap || !sdk.wrap.unwrap) {
-      return res.status(500).json({ message: "unwrap method is not available" });
+      return res
+        .status(500)
+        .json({ message: "unwrap method is not available" });
     }
 
     const unwrapTx = await sdk.wrap.unwrap({
@@ -38,7 +43,10 @@ router.get("/unwrap", async (req, res) => {
       account,
     });
 
-    console.log("✅ Full Transaction Response:", JSON.stringify(unwrapTx, null, 2));
+    console.log(
+      "✅ Full Transaction Response:",
+      JSON.stringify(unwrapTx, null, 2)
+    );
 
     res.json({
       message: "Unwrap transaction successful",

@@ -9,14 +9,14 @@ const { signRequestFor } = require("@bitte-ai/agent-sdk");
 
 const router = express.Router();
 const SEPOLIA_API_KEY = "7bb6501ed7b74d1e91fdd69ddfe59ce8";
-const rpcUrl = `https://sepolia.infura.io/v3/${SEPOLIA_API_KEY}`;
+const rpcUrl = `https://mainnet.infura.io/v3/{SEPOLIA_API_KEY}`;
 
 console.log("RPC URL:", rpcUrl);
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 const sdk = new LidoSDK({
-  chainId: 11155111, // Sepolia Chain ID
+  chainId: 1, // Sepolia Chain ID
   rpcUrls: [rpcUrl],
   web3Provider: provider, // Use ethers provider
 });
@@ -118,7 +118,7 @@ router.get("/stake", async (req, res) => {
 
     // Ensure value remains in decimal format inside `signRequestFor()`
     const populateTransaction = signRequestFor({
-      chainId: 11155111,
+      chainId: 1,
       metaTransactions: [
         {
           ...transaction,

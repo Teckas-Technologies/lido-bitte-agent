@@ -9,14 +9,14 @@ const { signRequestFor } = require("@bitte-ai/agent-sdk");
 const { parseEther } = require("viem");
 const router = express.Router();
 const SEPOLIA_API_KEY = "7bb6501ed7b74d1e91fdd69ddfe59ce8";
-const rpcUrl = `https://sepolia.infura.io/v3/${SEPOLIA_API_KEY}`;
+const rpcUrl = `https://mainnet.infura.io/v3/{SEPOLIA_API_KEY}`;
 
 console.log("RPC URL:", rpcUrl);
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 const sdk = new LidoSDK({
-  chainId: 11155111, // Sepolia Chain ID
+  chainId: 1, // Sepolia Chain ID
   rpcUrls: [rpcUrl],
   web3Provider: provider, // Use ethers provider
 });
@@ -52,7 +52,8 @@ router.get("/withdraw", async (req, res) => {
 
     if (!token || !evmAddress || !amount) {
       return res.status(400).json({
-        message: "Missing required query parameters: token, evmAddress, or amount",
+        message:
+          "Missing required query parameters: token, evmAddress, or amount",
       });
     }
 
@@ -123,7 +124,7 @@ router.get("/withdraw", async (req, res) => {
 
     // Format the final transaction for signing
     const populateTransaction = signRequestFor({
-      chainId: 11155111,
+      chainId: 1,
       metaTransactions: [
         {
           ...transaction,
@@ -221,11 +222,10 @@ router.get("/approve", async (req, res) => {
 
     if (!token || !evmAddress || !amount) {
       return res.status(400).json({
-        message: "Missing required query parameters: token, evmAddress, or amount",
+        message:
+          "Missing required query parameters: token, evmAddress, or amount",
       });
     }
-
-
 
     const callback = ({ stage, payload }) => {
       switch (stage) {
@@ -255,7 +255,7 @@ router.get("/approve", async (req, res) => {
     const valueInWei = ethers.parseEther(amount.toString());
     const userToken = token.toString().trim();
     const requestTx = await sdk.withdraw?.approval.approve({
-      amount:valueInWei,
+      amount: valueInWei,
       token: userToken,
       callback,
       account: evmAddress,
@@ -283,7 +283,7 @@ router.get("/approve", async (req, res) => {
 
     // Format the final transaction for signing
     const populateTransaction = signRequestFor({
-      chainId: 11155111,
+      chainId: 1,
       metaTransactions: [
         {
           ...transaction,
