@@ -1,0 +1,381 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Lido Assistant",
+        "description": "API for the interaction between users and the Lido Assistant APIs through the chat interface.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://one-inch-bitte-agent-csj4.vercel.app"
+        }
+    ],
+    "x-mb": {
+        "account-id": "sharmi_blessy.near",
+        "email": "sharmila@teckastechnologies.com",
+        "assistant": {
+            "name": "Lido Assistant",
+            "description": "An assistant that provides blockchain-related information and interacts with Lido AI Assistant APIs to assist users.",
+            "instructions": "You are an assistant designed to help users perform various blockchain-related tasks by interacting with the Lido AI Assistant APIs. Your primary functionalities include:\n\n1) Sepolia ETH Staking: Assist users with staking Sepolia ETH, including explaining staking rewards, risks, and how staked Sepolia ETH works. \n\nIf you receive all transaction details for Sepolia ETH staking, immediately call the 'create-EVM-tx' tool for Sepolia ETH staking. \n\nIf you reply with a list of details, present them in a tabular view. Ensure all responses are accurate, user-friendly, and delivered promptly. Be ready to provide clear explanations of blockchain terminology and concepts when necessary. If an error occurs or the requested data isn't available, provide a clear and actionable error message.If the user requests to fetch their balance for ETH immediately call the create-EVM-tx tool and provide the results in a clear and user-friendly format.stETH APR (Annual Percentage Rate) Retrieval**: Fetch and provide APR data:\n   - **Latest stETH APR (Annual Percentage Rate)**: Retrieve and present the most recent staking APR for stETH.\n   - **SMA (Simple Moving Average) APR for stETH**: Provide the average APR over a specified number of days to help users analyze historical staking yield trends.",
+            "tools": [
+                {
+                    "type": "generate-transaction"
+                },
+                {
+                    "type": "generate-evm-tx"
+                }
+            ],
+            "image": "https://lido.fi/static/index/defi-strategies/ethereum.svg",
+            "categories": [
+                "bitte",
+                "Ai",
+                "lido",
+                "lido-assistant",
+                "DeFi"
+            ],
+            "chainIds": [
+                11155111
+            ]
+        }
+    },
+    "paths": {
+        "/api/stake/stake": {
+            "get": {
+                "operationId": "stakeETH",
+                "summary": "This tool generates an EVM transaction payload for staking Sepolia ETH.",
+                "description": "Use this tool to create an EVM transaction for staking Sepolia ETH.",
+                "parameters": [
+                    {
+                        "name": "evmAddress",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The EVM address of the recipient"
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The amount of ETH to transfer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "evmSignRequest": {
+                                            "type": "object",
+                                            "properties": {
+                                                "to": {
+                                                    "type": "string",
+                                                    "description": "Receiver address"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "description": "Transaction value"
+                                                },
+                                                "data": {
+                                                    "type": "string",
+                                                    "description": "Transaction data"
+                                                },
+                                                "from": {
+                                                    "type": "string",
+                                                    "description": "Sender address"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Error message"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Error message"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/balance": {
+            "get": {
+                "operationId": "balanceETH",
+                "summary": "Retrieves the ETH balance for a given EVM address",
+                "description": "This tool to check the ETH balance of a specified EVM wallet address",
+                "parameters": [
+                    {
+                        "name": "evmAddress",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The EVM address of the recipient"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "evmSignRequest": {
+                                            "type": "object",
+                                            "properties": {
+                                                "to": {
+                                                    "type": "string",
+                                                    "description": "Receiver address"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "description": "Transaction value"
+                                                },
+                                                "data": {
+                                                    "type": "string",
+                                                    "description": "Transaction data"
+                                                },
+                                                "from": {
+                                                    "type": "string",
+                                                    "description": "Sender address"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Error message"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Error message"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/statistics/apr/last": {
+            "get": {
+                "operationId": "aprETH",
+                "summary": "Retrieves the latest Annual Percentage Rate (APR) for stETH",
+                "description": "This tool fetches the latest staking APR for stETH, providing insights into staking rewards over time.",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "evmSignRequest": {
+                                            "type": "object",
+                                            "properties": {
+                                                "to": {
+                                                    "type": "string",
+                                                    "description": "Receiver address"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "description": "Transaction value"
+                                                },
+                                                "data": {
+                                                    "type": "string",
+                                                    "description": "Transaction data"
+                                                },
+                                                "from": {
+                                                    "type": "string",
+                                                    "description": "Sender address"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Error message"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Error message"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/statistics/apr/sma": {
+            "get": {
+                "operationId": "aprsma",
+                "summary": "Retrieves the Simple Moving Average (SMA) APR for stETH",
+                "description": "This tool fetches the Simple Moving Average (SMA) APR for stETH over a specified number of days, providing insights into historical staking yield trends.",
+                "parameters": [
+                    {
+                        "name": "days",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The EVM address of the recipient"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "evmSignRequest": {
+                                            "type": "object",
+                                            "properties": {
+                                                "to": {
+                                                    "type": "string",
+                                                    "description": "Receiver address"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "description": "Transaction value"
+                                                },
+                                                "data": {
+                                                    "type": "string",
+                                                    "description": "Transaction data"
+                                                },
+                                                "from": {
+                                                    "type": "string",
+                                                    "description": "Sender address"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Error message"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Error message"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "lido_api_assistant",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "concurrently \"node index.js\" \"make-agent dev --port 5000\"",
+    "dev1": "nodemon index.js",
+    "build": "make-agent deploy",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@bitte-ai/agent-sdk": "^0.1.9",
+    "@lidofinance/lido-ethereum-sdk": "^4.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.5",
+    "express": "^4.21.2",
+    "viem": "^2.23.5"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "make-agent": "^0.2.9",
+    "nodemon": "^3.1.9"
+  }
+}
