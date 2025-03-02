@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Infura RPC for Sepolia
 const SEPOLIA_API_KEY = "7bb6501ed7b74d1e91fdd69ddfe59ce8";
-const rpcUrl = `https://mainnet.infura.io/v3/{SEPOLIA_API_KEY}`;
+const rpcUrl = `https://mainnet.infura.io/v3/${SEPOLIA_API_KEY}`;
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 // Initialize Lido SDK
